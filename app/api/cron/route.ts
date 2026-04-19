@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
 import * as cheerio from 'cheerio';
-
+const redis = Redis.fromEnv();
 export async function GET() {
   try {
     const response = await fetch('https://www.goodreturns.in/gold-rates/', { cache: 'no-store' });
@@ -22,6 +22,7 @@ export async function GET() {
             "18K": Math.round(price24k * 0.75)
           };
         }
+        await redis.set('gold_rates', cityRates);
       }
     });
 
