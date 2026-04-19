@@ -24,7 +24,9 @@ export async function GET() {
     // 3. Save to your Vercel database
     await kv.set('gold_rates', cityRates);
     return NextResponse.json({ status: 'Success', updated: Object.keys(cityRates).length });
-  } catch (err) {
-    return NextResponse.json({ status: 'Error', message: err.message });
+  } catch (err: any) {
+    return NextResponse.json({ 
+      status: 'Error', 
+      message: err instanceof Error ? err.message : 'Unknown error' 
+    });
   }
-}
